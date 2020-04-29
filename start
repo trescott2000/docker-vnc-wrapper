@@ -1,0 +1,7 @@
+#!/bin/bash
+export DISPLAY=:1
+Xvfb $DISPLAY -extension GLX -screen 0 1024x780x24 &
+/usr/bin/blackbox &
+x11vnc -passwd "$(cat /etc/hostname)" -forever -display $DISPLAY &
+exec $@
+
