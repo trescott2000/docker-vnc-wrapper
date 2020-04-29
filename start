@@ -1,7 +1,15 @@
 #!/bin/bash
 export DISPLAY=:1
+if [[ "$1" == "-r" ]]; then
+  shift
+  export RESOLUTION="$1"
+  shift
+else
+  export RESOLUTION=1440x900x24
+fi
 Xvfb $DISPLAY -extension GLX -screen 0 1024x780x24 &
-/usr/bin/blackbox &
 x11vnc -passwd "$(cat /etc/hostname)" -forever -display $DISPLAY &
+sleep 1 #blackbox needs X server ready before starting
+/usr/bin/blackbox &
 exec $@
 
